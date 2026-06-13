@@ -15,8 +15,11 @@
    git remote add origin https://github.com/YOUR_USER/dira-analysis.git
    git push -u origin main
    ```
-3. ב-GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**
-4. האתר יעלה אוטומטית לכתובת: `https://YOUR_USER.github.io/dira-analysis/`
+3. ב-GitHub: **Settings → Pages**
+   - **Source:** Deploy from a branch
+   - **Branch:** `gh-pages` → `/ (root)` → Save
+4. לך ל-**Actions** → **Update data and deploy** → **Run workflow**
+5. האתר יעלה לכתובת: `https://Talbahar24.github.io/dira-analysis/`
 
 הנתונים מתעדכנים אוטומטית כל יום ב-09:00 (שעון ישראל).
 
