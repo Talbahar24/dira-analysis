@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+projects_api_debug.json
+api_sample.json
+debug_api.py
+extract_dira_data.js

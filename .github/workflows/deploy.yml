@@ -1,0 +1,60 @@
+name: Update data and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # כל יום ב-06:00 UTC (09:00 ישראל)
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Scrape lottery data
+        run: python scrape_dira.py
+
+      - name: Generate dashboard
+        run: python generate_dashboard.py
+
+      - name: Prepare site
+        run: |
+          mkdir -p site
+          cp dashboard.html site/index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
